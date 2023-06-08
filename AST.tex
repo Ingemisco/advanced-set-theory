@@ -1,0 +1,638 @@
+\documentclass{scrartcl}
+
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{ulem}
+\usepackage{enumerate}
+\usepackage{inputenc}
+\usepackage{bbold}
+
+\setlength\parindent{0pt}
+
+\renewcommand{\P}{\mathcal{P}}
+\renewcommand{\L}{\mathcal{L}}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Le}{\L_\in}
+
+\newcommand{\set}[1]{\left\{#1\right\}}
+
+
+\DeclareMathOperator{\Con}{Con}
+\DeclareMathOperator{\ZFC}{ZFC}
+\DeclareMathOperator{\CH}{CH}
+\DeclareMathOperator{\FV}{FV}
+\DeclareMathOperator{\rk}{rk}
+\DeclareMathOperator{\dom}{dom}
+\DeclareMathOperator{\ran}{ran}
+
+\theoremstyle{definition}
+\newtheorem*{definition*}{Definition}
+\newtheorem*{example*}{Example}
+\newtheorem*{notation*}{Notation}
+
+\theoremstyle{plain}
+\newtheorem{method}{Method}
+\newtheorem*{proposition*}{Proposition}
+\newtheorem*{lemma*}{Lemma}
+\newtheorem*{theorem*}{Theorem}
+
+\theoremstyle{remark}
+\newtheorem*{recall*}{Recall}
+
+\begin{document}
+	\begin{recall*}
+		Every infinite subset of the real numbers is either countable or bijective with the whole of $\R$.
+		
+		Equivalently: $2^{\aleph_0} = \aleph_1$ i.e. $\P(\N)$ has size the first uncountable cardinal.
+	\end{recall*}
+
+	CH was first advanced by Cantor 1878
+	
+	$\ZFC \nvdash \lnot \CH$	(Gödel 1940)	
+	
+	$\ZFC \nvdash \CH$  (Cohen 1963)
+	
+	\vspace*{2mm}
+	
+	Cannot do: $\ZFC \vdash$ \uwave{``$\ZFC \nvdash \CH$"} $\longrightarrow$ find a model for $\ZFC + \lnot \CH \iff \Con(\ZFC + \lnot \CH)$
+	
+	By Gödel's Second Incompleteness Theorem: If ZFC is consistent then $\ZFC \nvdash \Con(ZFC)$. 
+	
+	instead: $\Con(\ZFC) \implies \Con(\ZFC + \lnot \CH)$ which we will show using ZFC and  
+	
+	$\Con(\ZFC)\implies\Con(\ZFC+\CH)$
+	
+	\begin{definition*}
+		The language of set theory (LST) is the first order predicate language $\Le$ which consists of the logical connectives and quantifiers ($\lnot, \implies, \lor, \land, \exists, \forall$), parentheses, variable symbols $v_0, v_1, \dots$, a logical binary predicates ``$=$" abd a single non-logical binary predicate ``$\in$". 
+	\end{definition*}
+
+	$\Con(\ZFC) \implies ZFC$ is satisfiable, i.e. there is an $\Le$-structure $(X, \underbrace{E}_{\subseteq X \times X})$ s.t. $(X, E) \vDash \ZFC$. We want a ``nicer" model of ZFC.
+	
+	\begin{method}
+		Assume the existance of an inaccessible cardinal $\kappa$. Then $(V_\kappa, \in) \vDash \ZFC$.
+	\end{method}
+
+	\begin{method}
+		To show $\ZFC + \lnot \CH$ is consistent, it is enough to show every finite subset is consistent. For every $\Sigma \subset \ZFC$ finite find $(X, \in) \vDash \Sigma$ + enough of ZFC to prove what we need (where $X$ is transitive).
+		
+		Transform this into a model of $\Sigma + \lnot \CH$.
+	\end{method}
+
+	For a set $X$ and $E \subseteq X\times X$, $\varphi$ a sentence of LST we know frmo logic how to define the satisfaction relation $(X, E) \vDash \varphi$. To define this we used:
+	\begin{itemize}
+		\item Symbol set of the language 
+		\item define by recursion terms and formulae, free variables etc. / satisfaction 
+		\item set $D$, relations / functions on $D$, elements of $D$
+		\item interpretation function maps from non-logical symbols of $\L$ to $D$/$\P(D\times D)$
+		\item Variable assignment from symbols to $D$
+	\end{itemize}
+
+	\begin{definition*}
+		We define the reletivization of formulae of LST to a set $W$ by recursion on formulae.
+		\begin{enumerate}[1.]
+			\item $(x \in y)_W := x \in y$ \hfill $(x=y)_W := x=y$ 
+			\item $(\lnot \varphi)_W := \lnot \varphi_W$ \hfill $(\varphi \land \psi)_W := \varphi_W \land \psi_W$
+			\item $(\exists x: \varphi)_W := \exists x: (x\in W \land \varphi_W)$
+		\end{enumerate}
+	\end{definition*}
+
+	\begin{align*}
+		(\forall x: \varphi)_W &\iff (\lnot \exists x: \lnot \varphi)_W\\
+		&=  \lnot (\exists x: \lnot \varphi)_W\\
+		&=  \lnot \exists x: (x \in W \land (\lnot \varphi)_W) \\
+		&=  \lnot \exists x: (x \in W \land \lnot \varphi_W) \\
+		&=  \forall x: \lnot (x \in W \land \lnot \varphi_W) \\
+		&=  \forall x: \lnot x \in W \lor \varphi_W = \forall x: x \in W \longrightarrow \varphi_W \\
+	\end{align*}
+	
+	We claim that $(W, \in \restriction W \times W) \vDash \varphi $ iff $\varphi_W$. We write $(W, \in)$ for $(W, \in \restriction W \times W)$.
+	
+	\begin{example*}
+		Extensionality: $(W, \in) \vDash $ Axiom of Extensionality:
+		\begin{align*}
+			(\text{Ax. Ext. })_W &= (\forall x: \forall y: (\forall z: z \in x \longleftrightarrow z \in y) \longrightarrow x = y)_W\\
+			&= \forall x \in W: \forall y \in W: (\forall z \in W: z \in x \longleftrightarrow z \in y) \longrightarrow x = y
+		\end{align*}
+	
+		If $W = \set{\emptyset, \set{\set{\emptyset}}}$ then $(W, \in) \nvDash \text{Ax. Ext.}$
+	\end{example*}
+	
+	\begin{proposition*}
+		If $W$ is transitive then $(W, \in) \vDash \text{Ax. Ext.}$
+	\end{proposition*}
+	
+	\begin{proof}
+		Let $W$ be transitive, $x, y \in W$ with $x \neq y$. Then there is some set $z$ with $z \in x \nleftrightarrow z \in y$. Wlog assume $z \in x, z \notin y$. Then $z \in W$ by transitivity of $W$.
+ 	\end{proof}
+	
+	\begin{example*}
+		Axiom Empty set: 
+		\begin{align*}
+			(W, \in) \vDash \text{Ax. Exmpty set} &\iff (\exists x: x = \emptyset)_W\\
+			&\iff (\exists x: \forall y: y \notin x)_W\\
+			&\iff \exists x \in W: \forall y \in W: y \notin x \iff \exists x \in W: x \cap W = \emptyset
+		\end{align*}
+	\end{example*}
+
+	\begin{example*}
+		$W = \set{\set{\emptyset}}$ Then $(W, \in) \vDash \text{Ax. Empty set}$ even though $\emptyset \notin W$.
+	\end{example*}
+	
+	\begin{proposition*}
+		If $W \neq \emptyset$ then $(W, \in) \vDash \text{Ax. Empty Set}$.
+	\end{proposition*}
+
+	\begin{proof}
+		By the Axiom of Foundation there is $y \in W$ with $y \cap W = \emptyset$.
+	\end{proof}
+	
+	\begin{definition*}
+		We say a formula $\varphi$ is absolute for $W$ if $\FV(\varphi) \subseteq \set{x_1, \dots, x_n}$ and 
+			\[\forall x_1 \in W, \dots, \forall x_n \in W: (\varphi_W \leftrightarrow \varphi)\]
+	\end{definition*}
+
+	\begin{lemma*}
+		The following formule are absolute for any transitive set $W$
+		\begin{enumerate}[1.]
+			\item $z = \emptyset$
+			\item $x \subseteq y$
+			\item $z = x \cap y$
+			\item $z = x \cup y$
+			\item $z = \bigcup x$
+			\item $z = \set{x, y}$
+			\item $z = (x, y)$
+		\end{enumerate}
+	\end{lemma*}
+
+	\begin{proof}
+		Let $W$ be transitive
+		\begin{enumerate}[1.]
+			\item Let $z \in W$
+				\[z = \emptyset \iff \forall x: x \notin z \implies\forall x \in W: x \notin z  \iff (z=\emptyset)_W\]
+			Also $x\in z \implies x \in W$ as $W$ is transitive so we must also have `` $\impliedby$"
+			\item 
+			\item Let $x, y, z \in W$
+			\[z=x\cap y \iff \forall u: u \in z \leftrightarrow (u \in x \land u \in y) \implies \forall u \in W: u \in z \leftrightarrow (u \in x \land u \in y) \iff (z = x \cap y)_W\]
+			``$\impliedby$" follows as $u \in z \implies u \in W, u \in x \land u \in y \implies u \in W$ 
+			\item 
+			\item 
+			\item Let $x, y, z \in W$
+				\[z = \set{x, y} \iff \forall u ( u \in z \leftrightarrow (u = x \lor u = y)) \] \[\implies \forall u \in W(u \in z \leftrightarrow (u=x \lor u = y)) \iff (z=\set{x,y})_W\]
+				``$\impliedby$" follows as $u \in z \implies u \in W, u = x \lor u = y \implies u \in W$
+			\item Let $x, y, z \in W$
+				\[z = (x, y) \iff \exists u, v: z = \set{x, y} \land u = \set{x} \land v = \set{x, y}\]
+				\[\overset{W \text{trans.}}{\implies} \exists u \in W: \exists v \in W: z = \set{x, y} \land u = \set{x} \land v = \set{x, y} \overset{6.}{\iff} (z = (x,y))_W\]
+				``$\impliedby$" follows simply.
+		\end{enumerate}
+	\end{proof}
+
+	\begin{example*}
+		$z= \P(x)$ abd $z = x \times y$ are \underline{not absolute} for transitive sets. Let $W = \omega, 2 \in \omega$. $(\omega, \in) \vDash 3 = \P(2)$
+		
+		$x \times y = \set{(a,b) \mid a \in x, b \in y}$. $W$ transitive then $x, y \in W \implies$ such $a, b \in W$, $z = (a, b)$ is absolute for $W$ but not all such ordered pairs may be in $W$.
+		
+		If $z = W \cap (x \times y)$, $z \in W$ then $(W, \in) \vDash z = x \times y$
+	\end{example*}
+
+	\begin{lemma*}
+		If $W$ is transitive and non-empty then it satisfies the axioms of extensionality, empty set and foundation.
+	\end{lemma*}
+	
+	\begin{proof}
+		We just have to show 
+		\begin{align*}
+			(\text{Ax. Foundation})_W &\iff (\forall x: x \neq \emptyset \longrightarrow \exists y: (y \in x \land x \cap y = \emptyset))_W\\
+			&\iff \forall x \in W: (x \neq \emptyset \longrightarrow \exists y \in W: (y \in x \land x \cap y = \emptyset))
+		\end{align*}
+		using the absoluteness of Empty set and $x \cap y$. Let $x \in W, x \neq \emptyset$. Then by the Axiom of Foundation $\exists y: y \in x \land x \cap y = \emptyset$ so $y \in W$ by transitivity so $\exists y \in W(y \in x \land x \cap y = \emptyset)$
+	\end{proof}
+
+	\begin{lemma*}
+		For a limit ordinal $\alpha, (V_\alpha, \in)$ satisfies the axioms of pairing, union, powerset and the axiom schema of separation. If additionally $\alpha > \omega, V_\alpha$ satisfies the axiom of infinity.
+	\end{lemma*}
+
+	\begin{proof}
+		\underline{Pairing}: $(\forall x: \forall y: \exists z: z = \set{x, y})_{V_\alpha}$ iff $\forall x \in V_\alpha: \forall y \in V_\alpha: \exists z \in V_\alpha: z = \set{x, y}$.
+		Let $x, y \in V_\alpha, \rk(\set{x, y}) = \max(\rk(x), rk(y))+1 < \alpha$ so $\set{x, y} \in V_\alpha$
+		
+		\underline{Union}: $(\forall x: \exists z: z= \bigcup x)_{V_\alpha}$ iff $\forall x \in V_\alpha: \exists z \in V_\alpha: z= \bigcup x$ so we just need $x \in V_\alpha \implies \bigcup x \in V_\alpha$ which is true as $\rk(\bigcup x) \leq \rk(x) < \alpha$.
+		
+		\underline{Powerset}: $(\forall x: \exists y: \forall z: (z \in y \longleftrightarrow z \subseteq x))_{V_\alpha}$ iff $\forall x \in V_\alpha: \exists y\in V_\alpha: \forall z\in V_\alpha: (z \in y \longleftrightarrow z \subseteq x)$. $\rk(\P(x)) = \rk(x) + 1$ so $x \in V_\alpha \implies \P(x) \in V_\alpha$. Let $x \in V_\alpha, y = \P(x) \in V_\alpha$ then $\forall z: z \in y \longleftrightarrow z \subseteq x$ so in particular $\forall z \in V_\alpha: (z \in y\leftrightarrow z \subseteq x)$ i.e. $(y = \P(x))_{V_\alpha}$.
+		
+		\underline{Infinity}:  Let $\alpha > \omega$. $(\exists x: ( \emptyset \in x \land \forall y : (y \in x \longrightarrow y \cup \set{y} \in x)))_{V_\alpha}$ iff $\exists x \in V_\alpha: ( \emptyset \in x \land \forall y \in V_\alpha : (y \in x \longrightarrow y \cup \set{y} \in x))$. Let $x = \omega$ then $x \in V_\alpha, \emptyset \in V_\alpha, \forall y: (y \in x \longrightarrow y \cup \set{y} \in x)$ so in particular $\forall y \in V_\alpha: (y \in x \longrightarrow y \cup \set{y} \in x)$
+		
+		\underline{Separation}: Let $\varphi$ be a formula of LST with $x, y \notin \FV(\varphi)$. Then 
+		\begin{align*}
+			(\forall x: \exists y: y = x \cap \set{z : \varphi})_{V_\alpha} &\iff (\forall x: \exists y: \forall z: z \in y \longleftrightarrow (\varphi \land z \in x))_{V_\alpha}\\
+			&\iff \forall x \in V_\alpha: \exists y \in V_\alpha: \forall z \in V_\alpha: z \in y \longleftrightarrow (\underbrace{\varphi_{V_\alpha}}_{\psi} \land z \in x)
+		\end{align*} 
+		
+		Let $x \in V_\alpha$. By the Axiom of Separation for $\psi$ $\exists y: y = x \cap \set{z: \varphi_{V_\alpha}}$. Then $y \subseteq x$ so $\rk(y) \leq \rk(x) \implies y \in V_\alpha$ i.e. $\exists y \in V_\alpha: \forall z \in V_\alpha: (z \in y \longleftrightarrow (\varphi_{V_\alpha} \land z \in x))$
+	\end{proof}
+
+	\begin{proof}
+		Axiom of Choice for a limit ordinal $\alpha$.
+		
+		TODO
+		
+	\end{proof}
+
+	\begin{theorem*}
+		For any inaccessiable cardinal $\kappa$ $(V_\kappa, \in) \vDash \ZFC$.
+	\end{theorem*}
+
+	\begin{proof}
+		We've shown that for any limit ordinal $\alpha > \omega$ $(V_\alpha, \in) \vDash $ All Axioms of ZFC except Replacement. So we need to show $(V_\kappa, \in) \vDash $ Ax. of Replacement.
+	
+	
+		\begin{proposition*}[1]
+			If $\kappa$ is inaccessible $x \in V_\kappa \implies |x| < \kappa$.
+		\end{proposition*}
+		
+		\begin{proposition*}[2]
+			If $\kappa$ is regular $x \subseteq V_\kappa \land |x| < \kappa \implies x \in V_\kappa$.
+		\end{proposition*}
+		
+		Recall that the Axiom of Replacement is actually an axiom schema, so fix $\varphi \in \text{LST}$ with $x, y\in \FV(\varphi)$. We need to show ... TODO
+	\end{proof}
+
+	\begin{definition*}
+		Let $W \subseteq Z$ be sets or class terms and $\varphi \in \text{Fml}_{\Le}$ with $\FV(\varphi) = \set{x_1, \dots, x_n}$. We say $\varphi$ is upward (downward) absolute betwwen $W, Z$ if 
+		$\forall x_1, \dots, x_n \in W: (\varphi_W \longleftrightarrow \varphi_Z)$ 
+	\end{definition*}
+	
+	Compare in model theory if $\mathcal{N}, \mathcal{M}$ are $\L$-structures $\mathcal{N}$ is a substructure of $\mathcal{M}, \mathcal{N} \subseteq \mathcal{M}$ iff $N \subseteq M$ and the interpretation function for $\mathcal{N}$ is the restriction of the interpretation function of $\mathcal{M}$.
+	
+	For $\varphi \in \L, \FV(\varphi) = \set{x_1, \dots, x_n}$ $\mathcal{N} \preceq_\varphi \mathcal{M}$ if $\forall a_1, \dots, a_m \in N: \mathcal{N} \vDash \varphi(a_1, \dots, a_n) \iff \mathcal{M} \vDash \varphi(a_1, \dots, a_n)$
+	
+	\begin{definition*}
+		$\mathcal{N} \preceq \mathcal{M}$ is an elementary substructure of $\mathcal{M}$ iff for all $\varphi \in \L: \mathcal{N} \preceq_\varphi \mathcal{M}$
+		
+		In other context this says $(W, \in) \preceq (Z, \in)$ iff all $\varphi \in \text{Lst}$ are absolute between $W, Z$. 
+	\end{definition*}  
+
+	\begin{definition*}
+		A list of formulae $\varphi_0, \varphi_1, \dots$ is \underline{subformula closed} if every subformula of a formula on the list is on the list. 
+	\end{definition*}
+
+	\begin{lemma*}[1]
+		Let $\vec{\varphi}$ be a subformula closed list, $W \subseteq Z$. The following are equivalent:
+		\begin{enumerate}[(i)]
+			\item $\vec{\varphi}$ are absolute for $W, Z$
+			
+			\item Whenever $\varphi_i$ is of the form $\exists x: \varphi_j(x, \vec{y})$ with $\FV(\varphi_j) \subseteq \set{\vec{y}}$ then $\forall \vec{y} \in W: (\exists x \in Z: \varphi_j(x, \vec{y})_Z \longrightarrow \exists x \in W: \varphi_j(x, \vec{y})_W)$ i.e. $\varphi_i$ is downward absolute between $W, Z$.
+		\end{enumerate}
+	\end{lemma*}
+
+	\begin{proof}
+		\underline{$(i) \implies (ii)$} is clear: Fix $\vec{y} \in W$ and assume $\varphi_i(\vec{y})_Z$ i.e. $(\exists x: \varphi_j(x, \vec{y}))_Z \iff \exists x \in Z: \varphi_j(x, \vec{y})$.
+		Then by absoluteness of $\varphi_i, (\varphi_i(\vec{y}))_W$ so $\exists x \in W: (\varphi_j(x, \vec{y})_W)$.
+		
+		\underline{$(ii) \implies (i)$} by induction on the length of $\varphi_i$: so we assume as the lefthand side that absoluteness holds for subformulae.
+		\begin{itemize}
+			\item $\varphi_i$ atomic - by definition of absoltue
+			\item $\varphi_i = \varphi_j \land \varphi_k$ by IH $\varphi_j, \varphi_k$ are absolute so by relativization $\varphi_i$ is absolute. $\varphi_i = \lnot \varphi_j$ similarly.
+			\item $\varphi_i = \exists x: \varphi_j(x, \vec{y})$. Fix $\vec{y} \in W$.
+			
+			$\varphi_i(\vec{y})_W \overset{def}{\iff} \exists x \in W: \varphi_j(x, \vec{y})_W \overset{IH}{\iff} \exists x \in W: \varphi_j(x, \vec{y})_Z \iff \exists x \in Z: \varphi_j(x, \vec{y})_Z
+			\overset{def}\iff \varphi_i(\vec{y})_Z$ 
+		\end{itemize} 
+	\end{proof}
+
+	\begin{definition*}
+		A formula of $\Le$ is $\Delta_0$ iff it only uses bounded quantifiers i.e. 
+		\begin{itemize}
+			\item $x \in y, x = y$ are $\Delta_0$
+			
+			\item If $\varphi, \psi$ are $\Delta_0$ so are $\lnot \varphi, \varphi \land \psi$
+			
+			\item If $\varphi$ is $\Delta_0$ so is $\exists x \in y: \varphi$
+		\end{itemize}
+	\end{definition*}
+
+	\begin{lemma*}[2]
+		Let $W$ be a transitive set. Then any $\Delta_0$ formula is absolute for $W$.
+	\end{lemma*}
+	
+	\begin{proof}
+		By induction on the length of formulae using lemma 1.  We just need to show that if $\varphi$ is of the form $\exists x: (x \in a \land \psi(x, \vec{y}, a))$ then $\forall a \in W: \forall \vec{y} \in W: (\exists x: (x \in a \land \psi(x, \vec{y}, a)) \longrightarrow \exists x \in W: (x \in a \land \psi(x, \vec{y}, a)))_W$
+		
+		So let $a, \vec{y} \in W$ and suppose $\exists x \in a: \psi(x, \vec{y}, a)$. $\psi$ is $\Delta_0$ as $\varphi$ is $\Delta_0$ and of length less than $\varphi$ so by IH $\psi$ is absolute for $W$ i.e. $\psi(x, \vec{y}, a) \longrightarrow \psi(x, \vec{y}, a)_W$. Further as $a \in W, a \subseteq W$ so $x \in a \longleftrightarrow x \in W \cap a$. Thus $\exists x \in a: \psi(x, \vec{y}, a) \implies \exists x \in W: (x \in a\land \psi(x, \vec{y}, a))$
+	\end{proof}
+
+	\begin{theorem*}[Downward Löwenheim-Skolem Theorem]
+		Let $\mathcal{M}$ be an infinite $\L$-structure. Fix a cardinal $\kappa$ with $\max(|\L|, \aleph_0) \leq \kappa \leq |M|$ and let $S \subseteq M$ with $|S| \leq \kappa$.
+		
+		Then there is an $\mathcal{N} \preceq \mathcal{M}$ s.t. $S \subseteq N$ and $|N| = \kappa$.
+	\end{theorem*}
+
+	\begin{proof}
+		We prove this for $\L = \Le$ and $\in$-models.
+		
+		Fix $M$ an infinite set and $\kappa \leq |M|$ and infinite cardinal and $S \subseteq M$ with $|S| \leq \kappa$. If $|S| < \kappa$ let $S' \subseteq M$ with $S \subseteq S'$ and $|S'| = \kappa$.
+		
+		We use Lemma 1 to build up $S' \subseteq N \subseteq M$ with $(N, \in) \preceq (M, \in )$. Clearly, a list of all formulae in $\Le$ is subformula closed. Let $R$ be a well-ordering on $M$. For any existential formula $\varphi = \exists x: \psi$ let $n_\varphi$ be $|\FV(\varphi)|$. We define a \underline{Skolem-function} $f_\varphi: M^{n_\varphi} \to M$ as follows.
+		
+		For $\vec{y} \in M^{n_\varphi}$, if $(M, \in) \vDash \exists x: \psi(x, \vec{y})$ then let $f_\varphi(\vec{y})$ be the $R$-least in $M$ s.t. $(M, \in) \vDash \psi(f_\varphi(\vec{y}), \vec{y})$. If 
+		$(M, \in) \nvDash \exists x: \psi(x, \vec{y})$ set $f_\varphi(\vec{y}) = 0$. Now set $N_0 = S'$ and define by recursion $N_{i+1} = N_i \cup \set{f_\varphi '' N_i^{n_\varphi} \mid \varphi \in \Le \text{ s.t. } \varphi = \exists x: \psi \text{ for some } \psi}$. Set $N = \bigcup_{i \in \omega} N_i$
+		
+		\underline{Claim 1}: $|N| = \kappa$. Clearly $|N| \geq \kappa$ as $|N_0| = \kappa$.
+		\[|N_1| \leq |N_0| \oplus \sup_{n\in \omega} |N_0^n| \otimes \aleph_0 \leq \kappa \otimes (\underbrace{\kappa \otimes \dots \kappa}_{n}) \otimes \aleph_0\]
+		
+		Similarly $|N_i| = |N_0| = \kappa$. Thus $|N| \leq |N_0| \oplus |N_1| \oplus \dots = \kappa \otimes \aleph_0 = \kappa$
+		
+		\underline{Claim 2}: $(N, \in) \preceq (M, \in)$: By Lemma 1 we just need to show that for any $\varphi = \exists x: \psi$ $\forall y_1, \dots, y_{n_\varphi} \in N: (\exists x \in M: \psi(x, \vec{y}))_M \longrightarrow \exists x \in N: \psi(x, \vec{y}_N)$. By induction on the length of formulae assume that $\psi$ is absolute for $M, N$ so let $\vec{y} \in N$ ans assume $\exists x \in M: \psi(x, \vec{y})_M$. Then there must be some $i$ s.t. $\vec{y} \in N_i$. Thus $f_\varphi(\vec{y}) \in N_{i+1} \subseteq N$ so $\psi(f_\varphi(\vec{y}), \vec{y})_M$ and by IH $\psi(f_\varphi(\vec{y}), \vec{y})_N$ Thus $\exists x \in N: \psi(x, \vec{y})_N$. Such an $N$ is called a \underline{Skolem Hull} of $M$. $N$ is not transitive.
+	\end{proof}
+	
+	\begin{definition*}
+		Let $\mathcal{M}$ be an $\L$-structure, $X \subseteq M^n$ is \underline{definable in $\mathcal{M}$} iff there is an $\L$-formula $\varphi$ with $n$ free variables s.t. for $a_1, \dots, a_n \in M$ $\mathcal{M}\vDash \varphi(a_1, \dots, a_n) \iff (a_1, \dots, a_n) \in X$ 
+	\end{definition*}
+		
+	$\set{\emptyset}$ is definable in $V_\lambda$; any hereditary finite set is definable in $V_\lambda$
+	
+	
+	\begin{theorem*}[Montague-Levy Reflection Theorem]
+		Let $\varphi_1, \dots, \varphi_n$ be any finite list of formulae. Then $\ZFC \vdash \forall \alpha: \exists \beta > \alpha (\vec{\varphi} \text{ are absolute for } V_\beta)$
+		
+		This is a theorem schema
+		
+		If $\vec{\varphi}$ are all axioms of $\ZFC$ then $\ZFC \vdash \forall \alpha: \exists \beta > \alpha: (\land \vec{\varphi})_{V_\beta}$
+	\end{theorem*}
+
+	\begin{proof}
+		By lengthening the list if necessary assume it is subformula closed. For each $i \leq n$ s.t. $\varphi_i = \exists x: \varphi_j$ define 
+		\begin{align*}
+			F_i &: V \to \text{On}\\
+			F_i(\vec{y}) &= \begin{cases}
+				0 & \text{if } \lnot \exists x: \varphi_j(x, \vec{y})\\
+				\eta & \text{where } \eta \text{ is least s.t. } \exists x \in V_\eta: \varphi_i(x, \vec{y})
+			\end{cases}
+		\end{align*}
+		Now define $G_i: \text{On} \to \text{On}$ by $G_i(\gamma) = \sup \set{F_i(\vec{y}) \mid \vec{y} \in V_\gamma}$. $G_i$ is well-defined by the Axiom of replacement $F_i''V_\gamma$ is a set of ordinals so its supremum is an ordinal.
+		
+		\underline{Claim}: $\forall \alpha: \exists \beta > \alpha: \lim(\beta) \land \forall \gamma < \beta: \forall i \leq n: G_i(\gamma) \leq \beta$.
+		
+		Define by recursion $\lambda_0 = \alpha, \lambda_{k+1} = \max\set{\lambda_k + 1, G_1(\lambda_k), \dots, G_n(\lambda_k)}$,  $\beta:= \sup\set{\lambda_k\mid k \in \omega}$. Then $\lim(\beta)$
+		and if $\gamma < \beta$ then $\gamma < \lambda_k$ for some $k \in \omega$. Hence $G_i(\gamma) \leq G_i(\lambda_k) \leq \lambda_{k+1} < \beta$. Then apply Lemma 1 to $V_\beta$.
+	\end{proof}
+
+	\begin{theorem*}[Mostowski-Shepherdson Collapsing Lemma]
+		Let $W$ be a set and $R \subseteq W \times W$ be wellfounded s.t. $(W, R) \vDash $ Ax. of Ext. i.e. $u, v \in W, u \neq W \longrightarrow \exists z \in W: zRu \longleftrightarrow\lnot zRv$
+		
+		Then there is a unique transitive set $M$ and unique isomorphism $\pi: (W, R) \cong (M, \in)$
+		
+		Additionally, if $Z \subseteq W$ with $R \restriction W \times Z = \in \restriction W \times Z$ and $v \in Z, u \in W$ with $uRv \longrightarrow u \in Z$ and $Z$ is transitive then $\pi\restriction Z = \text{id} \restriction Z$ 
+	\end{theorem*}
+
+	\begin{proof}
+		\underline{Claim 1}: If $\pi$ exists, it is unique.
+		
+		Suppose we have $\pi, M$ as above. Let $u, v \in W$. If $uRv$ then $\pi(u) \in \pi(v)$ as $\pi$ is an isomorphism. Then $\set{\pi(u) \mid u \in W, uRv} \subseteq \pi(v)$.
+		
+		Further if $z \in \pi(v)$ then $z \in M$ by transitivitiy hence $z = \pi(x)$ for some $x \in W$ with $xRv$ thus $\pi(v) \subseteq \set{\pi(u) \mid u \in W, uRv}$. Taken together $\pi(v) = \set{\pi(u) \mid u \in W, uRv}$, so if the isomrphism exists it must take this form.
+		
+		\underline{Claim 2}: Such a $\pi$ exists. 
+		
+		Define by recursion on $R$
+		\begin{align}
+			\pi(v) = \set{\pi(u) \mid u \in W, uRv} \label{thmMSC1}
+		\end{align}
+		Whis is this well defined? A $R$ is wellfounded there is $x \in W$ s.t. $\forall y \in W: \lnot yRx$. For such an $x$ we have $\pi(x) = \emptyset$. Further
+		for $W \setminus \set{x}$ there is $x' \in W \setminus \set{x}$ with $\forall y \in W\setminus \set{x}: \lnot yRx'$ so $\pi(x') = \set{\pi(u) \mid u \in W, uRx'} = \set{\pi(u)\mid u = x, uRx'}$.
+		
+		$\pi$ is clearly surjective.
+		
+		\underline{Claim 3}: $\pi$ is injective: 
+		
+		Assume not and take $t$ $\in$-minimal s.t. there are $u\neq v \in W$ with $t = \pi(u) = \pi(v)$. As $u \neq v$ there is some $x \in W$ with $xRu \longleftrightarrow\lnot xRv$. Wlog assume $xRu \land \lnot xRv$. Then $\pi(x) \in \pi(u) = t$. So we must have that for some $y$ with $yRv$ $\pi(y) = \pi(x)$. But this contradicts the minimality of $t$.
+		
+		\underline{Claim 4}: $\pi$ is orderpreserving
+		
+		``$\implies$" By (\ref{thmMSC1}) if $uRv$ then $\pi(u) \in \pi(v)$.
+		
+		``$\impliedby$" If $\pi(u) \in \pi(v)$ then for some $z \in W$ with $zRv$ $\pi(z) = \pi(u)$. As $\pi$ is injective $z = u$.
+		
+		\underline{Claim 5} (Also):  Suppose for some $u \in X$ $\pi(u) \neq u$ and take $v$ $\in$-minimal such. Then
+		
+		\begin{align*}
+			\pi(v) &= \set{\pi(u) \mid u \in W, uRv}\\
+			&= \set{\pi(u) \mid u \in W, u \in v}\\
+			&= \set{u \mid u \in v} = v
+		\end{align*}
+	\end{proof}
+
+	\begin{example*}
+		$(N, \in) \preceq (V_\kappa, \in)$ with $\kappa$ inaccessible, $N$ countable. $M$ is the collapse of $(N, \in)$. $\pi(\omega_1) = \omega_1^{ck}$ the least non-definable 
+		countable ordinal.
+		
+		$P(\omega) \in N : \pi(\P(\omega)) = \set{\pi(y) \mid y \in \P(\omega) \cap N} = \P(\omega) \cap N$
+	\end{example*}
+
+	\begin{example*}
+		If $X, R$ is a wellorder then its transitive collapse is $\text{ot}((X, R))$
+	\end{example*}
+
+	\begin{example*}
+		We can code $V_\omega$ as a subset of $\omega$ i.e. there is $E \subseteq \omega^2$ s.t. $(\omega, E) \cong (V_\omega, \in)$
+		
+		$M \vDash x = \P(\omega)$, $x = \P(\omega)^M$, $M \vDash x$ is uncountable $\implies \pi(y) = y$.
+		
+		Let $o(m)$ denote $\text{Ord} \cap M$ then $o(M) \in \text{Ord} $ is countable. 
+	\end{example*}
+	
+	Here: $(M, \in)$ countable transitive model of ZFC (ctm). Assume $M \vDash \CH$
+	
+	\begin{definition*}[Poset]
+		A \underline{forcing Poset} is a triple $(\mathbb{P}, \leq, \mathbb{1})$ where $\mathbb{P}$ is a set, $\leq$ is a pre-order on $\mathbb{P}$ i.e. transitive and reflexive and $\mathbb{1} \in \mathbb{P}$ is a largest element: $\forall p \in \mathbb{P}: p \leq \mathbb{1}$.
+		
+		Elements of $\mathbb{P}$ are called \underline{forcing conditions}.
+		
+		$p \leq q$: ``$p$ extends $q$"
+		
+		Abuse notation: and use $\mathbb{P}$ to refer to $(\mathbb{P}, \leq, \mathbb{1})$.
+	\end{definition*}
+
+	\begin{example*}
+		Normally we use partial orders $\mathbb{P}$. $\mathbb{1}$ ensures the ordering is connected. If it is a partial ordering then $\mathbb{1}$ is unique.
+	\end{example*}
+
+	\begin{definition*}
+		$p, q \in \mathbb{P}$ are compatible ($p \not\perp q$) if $\exists r \in \mathbb{P}$ s.t. $r \leq p \land r \leq q$ i.e. they have a common extension.
+		
+		$p, q \in \mathbb{P}$ are incompatible ($p \perp q$) iff they are not compatible. 
+	\end{definition*}
+
+	\begin{example*}
+		In a tree any two elements not along a branch are incompatible. In trees $(p \nleq q \land q \nleq p) \implies p \perp q$. This is not true in general.
+	\end{example*}
+
+	\begin{example*}
+		$(\P(\omega), \supseteq, \emptyset)$
+	\end{example*}
+
+	\begin{example*}
+		(Infinite subsetsets of $\omega, \subseteq^*, \omega$) with $p \subseteq^* q :\iff p \setminus q $ is finite.
+		
+		This is not a partial order e.g. $\omega \subseteq^* \set{42, 43, \dots}$ and $\omega \supseteq^* \set{42, 43, \dots}$.
+		
+		$p \bot q$ iff $p\cap q$ is finite
+		
+		There is no least element.	
+	\end{example*}
+
+	\begin{definition*}
+		$Fn(I, J)$ for sets $I, J$ is the set of all finite partial functions from $I$ to $J$ i.e. $\set{p \subseteq I \times J \mid |p| < \omega, \text{func}(p)}$
+		
+		The associated forcing poset has the order $\supseteq$ and $\mathbb{1} = \emptyset$. $p \leq q \iff p \supseteq q$ i.e. $p$ extends $q$ as a function.
+		
+		$p \not\perp q$ iff they have a common extension iff they are the same on $\dom(p) \cap \dom(q)$ iff $p \cup q \in Fn(I, J)$ and if so $p\cup q \leq p, p \cup q \leq q$.
+		
+		$p \in Fn(I, J) \longrightarrow$ a finite approximation of $f: I \to J$, $p$ is a condition such an $f$ must satisfy.  
+	\end{definition*}
+
+	\begin{definition*}
+		Let $\mathbb{P}$ be a forcing poset. Then $D \subseteq \mathbb{P}$ is \underline{dense} in $\mathbb{P}$ if $\forall p \in \mathbb{P}: \exists q \in D: q \leq p$.
+	\end{definition*}
+
+	\begin{example*}
+		Let $I$ be infinite, $J \neq \emptyset$ then for $i \in I$ then $D_i := \set{q \in Fn(I,J) \mid i \in \dom(q)}$ is dense.
+		
+		Let $ p \in Fn(I, J), i \in I$. If $i \in \dom(p)$ then $p \in D_i$ otherwise set $q = p \cup \set{(i, j)}$ where $j \in J$ is arbitrary. Then $q \in Fn(I, J)$ and
+		$q \leq p$ and $q \in D_i$.
+		
+		Also for $j \in J$ the set $\set{q \in Fn(I, J) \mid j \in \ran(q)}$ is dense.
+		
+		\underline{not dense}: $L = \set{q \in Fn(I, J) \mid (i, j) \in q}$ if $|J| \geq 2$. $j' \neq j, p = \set{(i, j')} \in Fn(I,J)$ and $\lnot \exists q: q \leq p$ and $q \in L$.
+	\end{example*}
+
+	\begin{definition*}
+		Let $\mathbb{P}$ be a forcing psoet. Then $G \subseteq \mathbb{P}$ is a \underline{filter} on $\mathbb{P}$ iff 
+		\begin{enumerate}[1.]
+			\item $\mathbb{1} \in G$
+			
+			\item $\forall p, q \in G: \exists r \in G: r \leq p \land r \leq q$
+			
+			\item $\forall p \in G: \forall q \in \mathbb{P}: p \leq q \implies q \in G$ 
+		\end{enumerate}
+	
+		Note: If $G \neq \emptyset$ then $3 \implies 1$.
+	\end{definition*}
+
+	\begin{example*}
+		$\set{\mathbb{1}}$ is a filter if $\mathbb{P}$ is a partial order
+	\end{example*}
+	
+	\begin{example*}
+		$A \neq \emptyset, \mathbb{P} = \P(A) \setminus \set{\emptyset}, \leq = \subseteq$. $\mathbb{1} = A$.
+		
+		$F \subseteq A$ is a filter:
+		\begin{enumerate}
+			\item $\iff$ $A \in F$
+			
+			\item $\iff$ $F$ closed under intersections
+			
+			\item $\iff F$ closed under superset
+		\end{enumerate}
+	\end{example*}
+
+	\begin{example*}
+		For a tree, a filter is a line from the root that stops somewhere
+	\end{example*}
+
+	\begin{example*}
+		$\mathbb{P} = Fn(I, J), I$ infinite, $J \neq \emptyset$. If $G$ is a filter on $\P$ then any $p, q \in G$ agree on $\dom(p) \cap \dom(q)$ so setting $f_G := \bigcup G$ is a a function
+		with $\dom(f_G) \subseteq I, \ran(f_G) \subseteq J$.
+		
+		$D_i = \set{p \in Fn(I, J) \mid i \in \dom(p)}$ is dense in $\mathbb{P}$ so if $\forall i \in I: G\cap D_i \neq \emptyset$ then $f_G: I \to J$. 
+	\end{example*}
+
+	\begin{notation*}
+		$M$ is ctm (of ZFC), $\mathbb{P} \in M$ we write to mean $(\mathbb{P}, \leq, \mathbb{1}) \in M$.
+	\end{notation*}
+
+	\begin{example*}
+		If $I, J \in M, M$ transitive and $M \vDash \ZFC $ then $Fn(I, J) \in M$ as well as the ordering on this poset.
+ 	\end{example*}
+ 
+ 	\begin{definition*}
+ 	For a forcing poset $\mathbb{P}, G$ is \underline{$\mathbb{P}$-generic over $M$} iff $G$ is a filter on $\mathbb{P}$ and $G \cap D \neq \emptyset$ for all dense $D \subseteq \mathbb{P}$ s.t. $D \in M$.
+ 	\end{definition*}
+ 
+ 	\begin{example*}
+ 		$Fn(\omega, 2), M$ a ctm for ZFC. Suppose $G$ is $\mathbb{P}$-generic for $M$: $\omega \in M, 2 \in M, Fn(\omega, 2) \in M$. $D_i \in M$ for $i \in \omega$ thus $f_G: \omega \to 2$.
+ 		
+ 		For each $h \in M$ with $h:\omega \to 2$ let $E_h = \set{q \in \mathbb{P} \mid \exists n \in \omega \cap \dom(q): q(n) \neq h(n)}$. Then $E_h$ is dense: Let $p \in \mathbb{P}$ with $h \restriction \dom(p) = p$. $\dom(p)$ is finite, so we can pick $n \notin \dom(p)$ and set $q = p \cup \set{(n, \lnot h(n))}$. Then $q \leq p$ and $q \in E_h$. Also $E_h \in M$ so $G \cap E_h \neq \emptyset$. Thus $f_G \neq h$. Thus $f_G \notin M$. 
+ 	\end{example*}
+ 
+ 	\begin{lemma*}[Generic Filter existance]
+ 		Let $\mathbb{P}$ be any forcing poset, let $\set{D_i \mid i \in \omega}$ be a countable family of dense subsets of $\mathbb{P}$ and $p \in \mathbb{P}$. Then there is a filter $G$ on $\mathbb{P}$ s.t. $p \in G$ and $G \cap D_i \neq \emptyset$ for $i \in \omega$. 
+ 		
+ 		Thus for any ctm $M$ with $\mathbb{P} \in M$ and any $p \in \mathbb{P}$ there is a $\mathbb{P}$-generic filter $G$ over $M$ with $p \in G$.
+ 	\end{lemma*}
+ 
+ 	\begin{proof}
+ 		By recurion and AC for each $n \in \omega$ choose $r_{n+1} \in \mathbb{P}$ s.t. $r_0 = p$ and $r_{n+1} \leq r_n$ and $r_{n+1} \in D_n$. At each step such
+ 		$r_{n+1}$ must exists as $D_n$ is dense.
+ 		
+ 		Set $G = \set{q \in \mathbb{P} \mid \exists n \in \omega r_n \leq q}$ then $G$ is a filter: 1,3 are easy. For 2 let $p, q \in G$ then
+ 		$\exists n,m \in \omega: p \geq r_n, q \geq r_m$ so $p \geq r_{max\set{m,n}} \in G$, $q \geq r_{max\set{m,n}} \in G$. Also $p \in G$, each $r_n \in G$ so $r_{n+1} \in G \cap D_n \neq \emptyset$.
+ 	\end{proof}
+ 
+ 	\begin{definition*}
+ 		$r \in \mathbb{P}$ is an atom of $\mathbb{P}$ there are no $p, q \in r$ s.t. $p \bot q$. $\mathbb{P}$ is atomless iff there are no atoms.
+ 	\end{definition*}
+ 
+ 	\begin{example*}
+ 		$r \in \mathbb{P}$ with no extension is an atom
+ 		
+ 		$(\P(\omega), \subseteq, \omega)$ every element is an atom
+ 		
+ 		linear order: all elements are atoms
+ 		
+ 		A tree with branches at every node is atomless
+ 		
+ 		$Fn(I, J), J \neq \emptyset$ if $I$ is finite has atoms. If $I$ is infinite and $|J| \geq 2$ then $Fn(I, J)$ is atomless
+ 	\end{example*}
+ 
+ 	\begin{lemma*}
+ 		If $\mathbb{P} \in M, M$ a ctm of ZFC, $\mathbb{P}$ atomless and $G$ is $\mathbb{P}$-generic over $M$ then $G \notin M$.
+ 	\end{lemma*}
+ 	
+ 	\begin{proof}
+ 		Let $D = \mathbb{P} \setminus G$. Then $D$ is dense as if $r \in \mathbb{P}$ there are $p, q \leq r: p \bot q$. Then at least one of these must be in $D$.
+ 		
+ 		If $G \in M$ then $D \in M$ by the axiom of separation in $M$. But as $G$ is $\mathbb{P}$-generic over $M$ we would have $D \cap G \neq \emptyset$. 
+ 	\end{proof}
+ 
+ 	\begin{definition*}
+ 		$\tau$ is a \underline{$\mathbb{P}$-name} iff $\tau$ is a set of ordered pairs s.t. $\forall (\sigma, p) \in \tau$ we have that $\sigma $ is a $\mathbb{P}$-name and $p \in \mathbb{P}$ ( Definition by recursion). $V^\mathbb{P}$ denotes the class of all $\mathbb{P}$-names.
+ 	\end{definition*}
+ 
+ 	$\emptyset$ is a $\mathbb{P}$-name, $\set{(\emptyset, p), (\emptyset, 1)}$ is a $\mathbb{P}$-name ($p, q \in \mathbb{P}$)
+ 	
+ 	For any set $x$ look at the associated graph. Label each node in the tree with some element.
+ 	
+ 	If $M$ is a transitive model of ZFC with $\mathbb{P} \in M$ then $M^\mathbb{P} := V^\mathbb{P} \cap M = \set{\tau \in M \mid (\tau \text{ is a } \mathbb{P}\text{-name})_M }$
+ 	
+ 	\begin{definition*}
+ 		For a $\mathbb{P}$-name $\tau$ and $G \subseteq \mathbb{P}$ define by recursion 
+ 		\[val(\tau, G) = \tau_G := \set{val(\sigma, G) \mid \exists p \in G: (\sigma, p) \in \tau}\]
+ 		Then $M[G] := \set{\tau_G \mid \tau \in M^\mathbb{P}}$ for a ctm $M$ with $\mathbb{P} \in M$.
+ 	\end{definition*}
+ 
+ 	\begin{example*}
+ 		$\emptyset_G = \emptyset$
+ 		
+ 		If $G$ is a filter, $\mathbb{1} \in G$, let $\tau = \set{(\sigma, \mathbb{1}), (\theta, \mathbb{1})}$ then
+ 		$\tau_G = \set{val(\sigma, G), val(\theta, G)} = \set{\sigma_G, \theta_G}$.
+ 		
+ 		$\tau = \set{(\emptyset, p), (\set{\emptyset, q}, r)}, p,r \in G, q \notin G $ then $\tau_G = \set{\emptyset_G, \set{(\emptyset,q)}_G} = \set{\emptyset, \emptyset} = \set{\emptyset}$
+ 		
+ 		$p, r \notin G, q$ does not matter: $\tau_G = \emptyset$
+ 		
+ 		$p\notin G, r,q\in G$: $\tau_G= \set{\set{\emptyset}}$
+ 	\end{example*}
+ \end{document}
