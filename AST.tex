@@ -635,4 +635,150 @@
  		
  		$p\notin G, r,q\in G$: $\tau_G= \set{\set{\emptyset}}$
  	\end{example*}
- \end{document}
+
+	We want to show that $M[G]$ is the desired extension of $M$ which contains $G$ and
+	everything else needed to ensure $M[G] \vDash \ZFC$. More precisely we will show:
+	\begin{enumerate}[(1)]
+		\item $M \subseteq M[G]$
+
+		\item $G \in M[G]$
+
+		\item $M[G]$ is transitive and countable
+
+		\item $M[G] \vDash \ZFC$
+
+		\item For any $N$ with the above properties $N \supseteq M[G]$
+	\end{enumerate}
+
+	For (i) we find for each $x \in M$ a name $\tau \in M^\mathbb{P}$, which for
+	any filter $G$ on $\mathbb{P}$ satisfies $\tau_G = x$
+
+	\begin{definition*}
+	For a forcing poset $(\mathbb{P}, \leq, \mathbb{1})$ and any set $x$
+	define $\check{x} := \set{(\check{y}, \mathbb{1}) \mid y \in x}$ (definition by
+	recursion)
+		
+	Clearly $\hat{x}$ is a $\mathbb{P}$-name
+
+	$\check{2} = \set{(\check{0}, \mathbb{1}), (\check{1}, \mathbb{1})} = 
+	\set{(\emptyset, \mathbb{1}), (\set{(\emptyset, \mathbb{1})}, \mathbb{1})}$
+	\end{definition*}
+	
+	\begin{lemma*}[1]
+		Let $G$ be a filter  on $\mathbb{1}$. Then 
+		\begin{enumerate}[(i)]
+			\item $\forall x \in M: \check{x} \in M^\mathbb{P}$ and $val(\check{x}, G) = x$
+			
+			\item $M[G] \supseteq M$ 
+		\end{enumerate}
+	\end{lemma*}
+		
+	\begin{proof}
+		(ii) follows by definition from (i)
+
+		For (i) $\check{x} \in M$ by absoluteness and $val(\check{x}, G) = x$ by
+		induction as $val(\check{x}, G) = \set{val(\check{y}, G) \mid y \in x}$ 
+	\end{proof}
+	
+	\begin{lemma*}[3]
+		For any filter $G$ on $\mathbb{P}$, $M[G]$ is transitive and countable.
+	\end{lemma*}
+
+	\begin{proof}
+		Transitive: $x \in M[G]$ then $x = \tau_G$ for some $\tau \in M^\mathbb{P}$
+		so $\forall y \in x: y = \sigma_G$ for some $\sigma \in M^\mathbb{P}$ thus
+		$y \in M^\mathbb{P}$
+
+		Countable: $|M[G]| \leq |M^\mathbb{P}| \leq |M| \leq |M[G]|$
+	\end{proof}
+
+	\begin{definition*}
+		Given $\mathbb{P}$, define $\Gamma := \set{(\check{p}, p) \mid p \in \mathbb{P}}$
+
+		$\Gamma_G = \set{\check{p} \mid p \in G} = \overset{\text{lem 1}}{=}
+		\set{p \mid p \in G} = G$
+
+		Hence we have 
+	\end{definition*}
+
+	\begin{lemma*}[2]
+		$\Gamma \in M$ is a $\mathbb{P}$-name and $\Gamma_G = G$ hence $G \in M[G]$.
+	\end{lemma*}
+
+	\begin{proof}
+		$\Gamma$ is definable within $M$ and clearly a $\mathbb{P}$-name.
+	\end{proof}
+
+	\begin{definition*}[Names for unordered and ordered pairs]
+		$up(\sigma, \tau) := \set{(\sigma, \mathbb{1}), (\tau, \mathbb{1})}$
+		
+		$op(\sigma, \tau) := up(up(\sigma, \sigma), up(\sigma, \tau))$
+
+		Observe: $\sigma, \tau \in M^\mathbb{P} \implies up(\sigma, \tau), 
+		op(\sigma, \tau)\in M^\mathbb{P}$ 
+	\end{definition*}
+
+	\begin{lemma*}[4]
+		Let $M, \mathbb{P}$ be as above and $G$ a filter on $\mathbb{P}$. Then
+		$M[G]$ is a ctm of the axioms of Extenionality, Emptyset, Foundation, Pairing,
+		Infinity and Union.
+	\end{lemma*}
+
+	\begin{proof}
+		We have seen all transitive non-empty sets satisfy Emptyset, Extensionality and
+		Foundation.
+
+		$M[G]$ satisfies pairing by observing as $a, b \in M[G] \implies$
+		there is $\sigma, \tau \in M^\mathbb{P}$ s.t. $\tau_G = a, \sigma_G = b$. 
+		Then by above $up(\sigma, \tau) \in M^\mathbb{P}$ and $(up(\sigma, \tau))_G =
+		\set{\sigma_G, \tau_G} = \set{a, b}$.
+
+		$M[G]$ satisfies the Axiom of Infinity as $\omega \in M[G]$ and absoluteness.
+
+		Union: Let $a \in M[G]$. Fix $\tau \in M^\mathbb{P}$ s.t. $a = \tau_G$.
+		
+		set $\pi = \set{ (\theta, p) \mid \exists (\sigma, q) \in \tau, 
+		\exists r \in \mathbb{P}: ((\theta, r) \in \sigma\land p \leq r \land p \leq q)}$
+	
+		Claim. $\bigcup a = b := \pi_G$
+		
+		$\subseteq$: Let $d \in \bigcup a$ then $\exists q \in G: \exists \sigma: 
+		(\sigma, q) \in \tau$ and 
+		$d \in \sigma_G$. Thus there is also $r \in G, \theta$ s.t. $(\theta, r)\in \sigma$
+		and $\theta_G = d \in \pi_G$ 
+		
+		$\supseteq$: Let $d \in \pi_G$. Then $\exists p \in G, \exists \theta$ s.t.
+		$(\theta, p) \in \pi$ and $\theta_G = d,  
+		p \leq r, p \leq q \implies \theta_G \in \sigma_G$ and
+		$\sigma_G \in \tau_G = a \implies \theta_G \in \bigcup a$
+	\end{proof}
+
+	\begin{example*}
+		$\mathbb{P} = Fn(I, J), I, J \in M, G$ a filter then $\bigcup G$ is a function.
+		We have a name $\Gamma$ for $G$ so we cann write a name for $\bigcup G$ as above.
+		But there is a much more natural name for $\bigcup G$.
+
+		  $$ \mathring{f} = \set{(op(\check(i), \check(j)), p) \mid p \in \mathbb{P} \land 
+		  (i, j) \in p} $$
+	
+		We have seen $P, G \in M[G]$. What about $\mathbb{P} \setminus G =: C$?
+
+		Candidate name $\mathring{C} = \set{(\check{p}, q) \mid p, q \in \mathbb{P}, p \bot q}$
+
+		$\mathring{C}_G = \set{p \in \mathbb{P} \mid \exists q \in G: p \bot q}$.
+		As all elements of a filter aare compatible: $\mathring{C}_G \cap G = \emptyset$
+
+		Do we have $G \cup \mathring{C}_G = \mathbb{P}$?
+		
+		Let $p \in \mathbb{P}$ set $D_p = \set{q \in \mathbb{P} \mid p \bot q \lor q \leq p }$.
+		$D_p \in M$ and $D_p$ is dense ($r \in \mathbb{P}, r \bot p \implies r \in D_p$
+		otherwise $\exists q \in \mathbb{P}: q \leq r, q \leq p \implies q \in D_p$)
+
+		If $G$ is generic we find $q \in G \cap D_p \implies q \in D_p$
+
+		If $q \bot p$ then $p \in \mathring{C}_G$. If $q \leq p$ then $p \in G \longrightarrow$ is complement.
+
+
+		
+	\end{example*}
+\end{document}
