@@ -776,9 +776,138 @@
 
 		If $G$ is generic we find $q \in G \cap D_p \implies q \in D_p$
 
-		If $q \bot p$ then $p \in \mathring{C}_G$. If $q \leq p$ then $p \in G \longrightarrow$ is complement.
-
-
-		
+		If $q \bot p$ then $p \in \mathring{C}_G$. If $q \leq p$ then $p \in G \longrightarrow$ is complement.		
 	\end{example*}
+
+	\begin{lemma*}[5]
+		Let $N$ be a transitive model of ZFC with $M \subseteq N$ and $G \in N$. Then $M[G] \subseteq N$.
+	\end{lemma*}
+	
+	\begin{proof}
+		The definition of $val(\tau, G) = \tau_G$ is absolute between transitive models of ZFC so if $M^\mathbb{P} \subseteq M \subseteq N$ and $G \in N$ then
+		$val(\tau, G) \in N$ for any $\tau \in M^\mathbb{P}$. Thus $M[G] \subseteq N$.
+	\end{proof}
+
+	\begin{lemma*}[6]
+		For all $\tau \in M^\mathbb{P}$
+		\begin{enumerate}[(1)]
+			\item $rk(\tau_G) \leq rk(\tau)$
+
+			\item $o(M[G]) = o(M)$ i.e. $\text{On} \cap M[G] = \text{On} \cap M]$
+		\end{enumerate}
+	\end{lemma*}
+
+	\begin{proof}
+		\begin{enumerate}[(1)]
+			\item By $\in$-induction on $\tau$:
+			\begin{align*}
+				rk(\tau_G) &= \sup\set{rk(x)+1 \mid x \in \tau_G}\\ 
+				&= \sup\set{rk(\sigma_G)+1 \mid (\sigma, p) \in \tau \land p \in G}\\
+				&\leq \sup\set{rk(\sigma_G)+1 \mid \sigma \in \dom(\tau)}\\
+				&\overset{IH}\leq \sup\set{rk(\sigma)+1 \mid \sigma \in \dom(\tau)}\\
+				&\leq rk(\tau)
+			\end{align*}
+
+			\item $\alpha \in M[G] \cap \text{On} \implies \alpha = \tau_G$ for some $\tau \in M^\mathbb{P}$
+			but $\alpha = rk(\alpha) = rk(\tau_G) \leq rk(\tau) \in M \cap \text{On}$ as $\tau \in M \vDash \ZFC$ so $\alpha \in M$.
+			Thus $o(M[G]) \subseteq o(M)$ but as $M \subseteq M[G]$ we also have $o(M) \subseteq o(M[G])$.
+		\end{enumerate}
+	\end{proof}
+
+	We need to show $M[G] \vDash $ Axiom of Separation i.e. for $\varphi$ a formula of $\Le, \vec{a}, b \in M[G]$ we have $\exists s \in M[G]$
+	s.t. $s = \set{z \mid z \in b \land \varphi(z, vec{a})_{M[G]}}$
+
+	Let's look at a simpler case $b = \omega, \varphi = z \in a,, a = \tau_G$ so we need to find a name $\sigma \in M^\mathbb{P}$ s.t.
+	$\sigma_G = \tau_G \cap \omega$. Why not take $\check{\tau_G \cap \omega}$? If $\tau_G \notin M$ then we can't assume $\tau_G \cap \omega \in M$.
+	If $\tau = \set{(\check{x}_i, p_i) \mid i \in I}$ then $\sigma = \set{(\check{x}_i, p_i) \mid i \in I \land x_i \in \omega}$.
+	This works but in general we cannot tell for $\pi \in \dom(\tau)$ if $\pi_G \in \omega$ or not without knowing
+	what $G$ is. For example, suppose $(\pi, p) \in \tau, \pi = \set{(\check{n}, p_n) \mid n \in \omega}$. Then $\pi_G \in \omega$ iff 
+	there is some $n \in \omega$ s.t. $\forall m \leq n: p_m \in G$ and $\forall m > n:p_m \notin G$. Thus if $q \in \mathbb{P}$,
+	new $p \geq q, \forall m \leq n: p_m \geq q$ and $\forall m > n:p_m \bot q $ then $q \in G \implies \pi_G \in \tau_G \cap \omega$.
+	So we could put $(\pi, q)$ in $\sigma$.
+
+	\begin{definition*}
+		$\mathcal{FL}_{M, \mathbb{P}}$ is the collection of all formulae in the language $\Le$ extended with constant symbols for each name
+		in $M^\mathbb{P}$.
+	\end{definition*}
+
+	\begin{example*}
+		If $\varphi$ is a formula of $Le$ with two free variables then $\varphi(\check{n}, \tau)$ is a sentence in $\mathcal{FL}_{M, \mathbb{P}}$
+	\end{example*}
+
+	\begin{definition*}
+		Let $\psi$ be a sentence of $\mathcal{FL}_{M, \mathbb{P}}$. Then $M[G] \vDash \psi$ has the usual model theoretic meaning 
+		with $\in$ interpreted as membership andd any constant symbol or $P$-name $\tau$ is interpreted as $\tau_G$. 
+	\end{definition*}
+
+	\begin{definition*}
+		For a sentence $\psi$ of $\mathcal{FL}_{M, \mathbb{P}}$ we say $p \Vdash_{\mathbb{P}, M} \psi$ if for all $\mathbb{P}$-generic
+		filter $G$ over $M$ with $p \in G$ we have $M[G] \vDash \psi$.
+
+		We omit subscripts $\mathbb{P}, M$ when this is clear from the context.
+	\end{definition*}
+
+	\begin{example*}
+		(example from above): $q \Vdash \pi \in \tau \cap \check{\omega}$
+	\end{example*}
+
+	\begin{example*}
+		Let $\Gamma : \set{(\check{p}, p) \mid p \in \mathbb{P}}$ be the name for the generic.
+
+		If $p \leq q$ then $p \Vdash \check{q} \in \Gamma$ i.e. $\forall G$ s.t. $p \in G$ we have 
+		$M[G] \vDash \check {q} \in \Gamma$ i.e. $M[G] \vDash \check{q}_G \in \Gamma_G$
+		i.e. $M[G] \vDash q \in G$ i.e. $q \in G$.
+
+		$\mathbb{1} \Vdash \psi$ iff $M[G] \vDash \psi$ for all $\mathbb{P}$-generic filters $G$ over $M$ e.g.
+		$\mathbb{1} \Vdash $ Axiom of Union by Lemma 4.
+
+		If $\mathbb{P}$ is atomless and $p \bot q \in \mathbb{P}$ then $p \Vdash \check{q} \notin \Gamma$.
+
+		$\mathbb{1} \nVdash  \check{p} \in \Gamma $ and  $\mathbb{1} \nVdash  \check{p} \notin \Gamma$
+
+		We may have that $p \nVdash \psi$ and $p \nVdash \lnot \psi$
+
+		$\mathbb{1} \Vdash \check{\omega} \in \check{\omega + 1}$
+	\end{example*}
+
+	\begin{lemma*}
+		If $p \Vdash \varphi$ and $q \leq p$ then $q \Vdash \varphi$		
+	\end{lemma*}
+
+	\begin{proof}
+		If $q \leq p$ and $q \in G$ for a filter $G$ then $p \in G$ by upwards closure.
+	\end{proof}
+
+	Back to the example: Our proposal is $\sigma = \set{(\check{n}, p) \mid n \in \omega \land p \in \mathbb{P} \land p \Vdash \check{n} \in \tau}$.
+	$\sigma$ is a name but is it definable in $M$ i.e. is $\sigma \in M^\mathbb{P}$?
+	
+	\underline{Problem 1}: We defined $\Vdash$ using generics for $M$ and these are generally not in $M$, so 
+	there is no obvious reason to think that $\sigma \in M$.
+
+	\underline{Problem 2}: How can we be sure $\sigma_G = \omega \cap \tau_G$. $\sigma_G \subseteq \omega \cap \tau_G$ as if 
+	$G$ is a generic with $p \in G$ then $n \in \sigma \iff p \Vdash \check{n} \in \tau \implies M[G] \vDash \check{n} \in \tau \implies
+	n \in \tau_G \cap \omega$.
+
+	But how do we know for every $n \in \omega \cap \tau_G$ there is some $p \in \mathbb{P}$ s.t. $p \Vdash \check{n} \in \tau$?
+
+	\begin{lemma*}[Truth Lemma]
+		Let $\psi$ be a sentence in $\mathcal{FL}_{M, \mathbb{P}}, G$ $\mathbb{P}$-generic over $M$ then $M[G] \vDash \psi $ iff there
+		is a $p \in G$ s.t. $p \Vdash \psi$.		
+	\end{lemma*}
+
+	Note: $\impliedby$ is obvious from the definition of $\Vdash$.
+
+	\begin{lemma*}[Definability Lemma]
+		Let $\varphi $ be a formula of $\Le$ with $FV(\varphi ) = \set{x_1, \dots, x_n}$. Then
+		$\set{(p, \mathbb{P}, \leq, \mathbb{1}, \theta_1, \dots, \theta_n) \mid (\mathbb{P}, \leq, \mathbb{1}) \text{ is a forcing poset in } M, p \in \mathbb{P},
+		\theta_1, \dots, \theta_n \in M^\mathbb{P}, p \Vdash \varphi(\theta_1, \dots, \theta_n)}$
+		is definable (without parameters) in $M$.
+	\end{lemma*}
+
+	Using these, we see $\sigma$ works:
+
+	Definability Lemma for $\varphi = x \in y \implies \sigma \in M^\mathbb{P}$
+
+	Truth Lemma: $(n \in \tau_G \cap \omega)_{M[G]}$ i.e. $M[G] \vDash \check{n} \in \tau \cap \check{\omega} \implies \exists p \in G: p \Vdash \check{n} \in \tau \cap \check{\omega}$
+	So $p \Vdash \check{n} \in \tau \implies (\check{n}, p ) \in \sigma_G$
 \end{document}
