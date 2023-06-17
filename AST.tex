@@ -910,4 +910,168 @@
 
 	Truth Lemma: $(n \in \tau_G \cap \omega)_{M[G]}$ i.e. $M[G] \vDash \check{n} \in \tau \cap \check{\omega} \implies \exists p \in G: p \Vdash \check{n} \in \tau \cap \check{\omega}$
 	So $p \Vdash \check{n} \in \tau \implies (\check{n}, p ) \in \sigma_G$
+
+	\begin{lemma*}[1]
+		For any $\mathbb{P} \in M$ and sentencess  $\varphi, \psi \in \mathcal{FL}_{M, \mathbb{P}}$
+		\begin{enumerate}
+			\item No $p$ forces both $\varphi$ and $\lnot \varphi$
+
+			\item If $\varphi$ and $\psi$ are logically equivalent then $p \Vdash \varphi$ iff $p \Vdash \psi$
+			
+			\item $p \Vdash \varphi$ and $q \leq p$ then $q \Vdash \varphi$
+
+			\item $p \Vdash \varphi \land \psi$ iff $p \Vdash \varphi \land p \Vdash \psi$
+		\end{enumerate}
+	\end{lemma*}
+
+	\begin{lemma*}
+		$M[G] \vDash $ Axiom of Separation
+	\end{lemma*}
+
+	\begin{proof}
+		Fix a formula $\varphi$ of $\Le$ with $y \notin FV(\varphi)$. We need to show that $\forall z: \forall v_1, \dots, v_n \in M[G]: \exists y \in M[G]: \forall x \in M[G]: 
+		(x \in y \leftrightarrow (x \in z \land \varphi(x, z, \vec{v})_{M[G]}))$ 
+
+		Fix $\pi, \sigma^1, \dots \sigma^n \in M^\mathbb{P}$  i.e. $\pi_G, \sigma_G^1, \dots, \sigma_G^n \in M[G]$.
+
+		Set $S:= \set{x \in \pi_G \mid \varphi(x, \pi_G, \vec{\sigma_G})_{M[G]}}$. We
+		show $S \in M[G]$ so we need $\tau \in M^\mathbb{P}$ s.t. $\tau_G = S$.
+
+		Let $\tilde{\varphi}(x)$ denote  $\varphi(x, \pi, \vec{\sigma}) \in \mathcal{FL}_{M, \mathbb{P}}$.
+
+		Now $S = \set{\theta_G \mid \theta \in \dom(\pi) \land M[G] \vDash (\theta \in \pi
+		\land \vec{\varphi}(\theta) ) }$. Define  $\tau := \set{(\theta, p) \mid
+		\theta \in \dom(\pi) \land p \in  \mathbb{P} \land p \Vdash \vec{\varphi}(\theta)}$.
+
+		Then $\tau \in M^\mathbb{P}$  by the Definability Lemma and
+		$\tau_G = \set{\theta_G \mid \theta \in \dom(\pi) \land \exists p \in G: p
+		\Vdash (\theta \in \pi \land \vec{\varphi}(\theta))}$.
+		By definition of forcing $\tau_G \subseteq S$. To prove $S \subseteq \tau_G$
+		fix $\theta_G \in S$ with $\theta \in \dom(\pi)$ then $M[G] \vDash \in \pi 
+		\land \vec{\varphi}(\theta)$ so by the Truth Lemma we can find $p \in G$
+		s.t. $p \Vdash \theta \in \pi \land \vec{\varphi}(\theta)$. Thus
+		$(\theta, p) \in \tau$ so $\theta_G \in \tau_G$ thus $S \in M[G]$.
+	\end{proof}
+
+	\begin{theorem*}
+		$M[G] \vDash \ZFC$
+	\end{theorem*}
+
+	\begin{proof}
+		\underline{Powerset}: It is enough to prove that if $a \in M[G]$ then
+		$\exists b \in M[G]$ s.t. $\P(a) \cap M[G] \subseteq b$. Then by separation
+		$\P(a) \cap M[G] \in M[G]$. 
+
+		Fix $\tau \in M^\mathbb{P}$ s.t. $\tau_G = a$. Let $Q = (\P(\dom(\tau) \times 
+		\mathbb{P}))_M$ i.e. all names $\theta \in m^\mathbb{P}$ s.t. $\theta \subseteq
+		\dom(\tau)$.
+
+		Let $\pi = Q \times \set{\mathbb{1}}$ and $b = \pi_G = \set{\theta_G \mid \theta
+		\in Q}$. Now let $c \in \P(a) \cap M[G]$, we show $c \in b$. Fix $\gamma \in
+		M^\mathbb{P}$ s.t. $\gamma_G = c$ and let $\theta = \set{(\sigma, p) \mid
+		\sigma \in \dom{\tau} \land p \Vdash \sigma \in \gamma \Vdash \sigma \in \gamma}$
+		
+		$\theta \in M$ by the Definability Lemma. Since $\theta \in Q$, we're
+		done if we can show $\theta_G = c$. $\theta_G \subseteq c$ as $\theta_G
+		= \set{\sigma_G \mid \sigma \in \dom(\tau), \exists p \in G: p \Vdash \sigma \in
+		\gamma}$ and by definition of $\Vdash$ such $\sigma_G \in \gamma_G = c$.
+		
+		Since $c \subseteq a = \tau_G$ each element of $c$ is some $\sigma_G$ for
+		some $\sigma \in \dom(\tau)$. Since $\sigma_G \in c = \gamma_G$ by the
+		Truth Lemma there is $p \in G$ s.t. $p \Vdash (\sigma, p) \in \theta$ 
+		and $\sigma_G \in \theta_G$, so $c \supseteq \theta_G$.
+
+		\underline{Replacement}: Let $a \in M[G]$ $(\forall x \in a: \exists y: \tilde{\varphi}(x, y))_{M[G]}$
+		and find $b \in M[G]$ s.t. $(\forall x \in a: \exists y \in b: \tilde{\varphi}(x,y))_{M[G]}$
+		so $\vec{\varphi} \in \mathcal{FL}_{M, \mathbb{P}}$ is an abbreviation for
+		$\varphi$ with names/constants as parameters as in the proof of the 
+		Axiom of Separation.
+
+		Say $a = \tau_G$ so $M[G] \vDash \forall x \in \tau: \exists y: \vec{\varphi}(x,y)$.
+		Working in $M$ using the Definability Lemma let $Q$ be a set of names s.t.
+		$\forall p \in \mathbb{P}: \forall \sigma \in \dom{\tau}$ if there is 
+		$\theta$ s.t. $p \Vdash \vec{\sigma, p}$ then at least one such $\theta \in Q$.
+
+		How do we know such a set (not a proper class) $Q$ exists? By the Montague-Levy
+		Reflection Theorem in $M: \forall p: \forall \sigma: \exists \theta$ s.t.
+		$p \Vdash \varphi(\sigma, \theta)$ holdss in $M$ then it holds
+		restricted to some $(V_\sigma)_M$ s.t. $\mathbb{P}, \tau \in (V_\sigma)_M$
+		so we could take $Q = M^\mathbb{P} \cap (V_\sigma)_M$. 
+
+		Let $\pi = Q \times \set{\mathbb{1}}$ and $b = \pi_G = \set{\theta_G \mid \theta
+		\in G}$. Fix $x \in a$ so $x = \sigma_G$ for some $\sigma \in \dom(\tau)$.
+		Then $M[G] \vDash \tilde{\varphi}(\sigma, \theta)$ and then by the Truth
+		Lemma there is $p \in G$ s.t. $p \Vdash \vec{\varphi}(\sigma, \theta)$.
+		Then there is a $\theta \in G$ s.t. $p \Vdash \tilde{\varphi}(\sigma, \theta) $
+		if $y = \theta_G$ then $y \in b$ and $\tilde\varphi(x,y)_{M[G]}$.
+	\end{proof}
+
+	\begin{lemma*}[1 (cont'd)]
+		\begin{enumerate}[1.]
+			\setcounter{enumi}{4}
+			\item $p \Vdash \lnot \varphi $ iff $\lnot \exists q \leq p: q \Vdash \varphi $
+			and $p \Vdash \varphi $ iff $\lnot \exists q \leq p: q \Vdash \lnot \varphi$
+			
+			\item $p \Vdash \varphi \longrightarrow \psi$ iff $\lnot \exists q \leq p: (q \Vdash \varphi \land 
+			q \Vdash \lnot \psi)$
+
+			\item $p \Vdash \varphi \land \psi$ iff $\set{q \leq p \mid q \Vdash
+			\varphi \text{ or } q \Vdash \psi}$ is dense below $p$.
+		\end{enumerate}
+	\end{lemma*}
+
+	\begin{proof}[Using the Truth Lemma]
+		\begin{enumerate}[1.]
+			\setcounter{enumi}{4}
+			\item ($\longrightarrow$) is clear.
+
+			($\longleftarrow$) Assume $p \nVdash \lnot \varphi$ then we can
+			find some generic $G$ with $p \in G$ and $M[G] \vDash \varphi$. 
+			By the Truth Lemma there is $r \in G$ s.t. $r\Vdash \varphi $.
+			Since $G$ is a filter we can find $q \in G$ s.t. $q \leq r$ and
+			$q \leq p$ then $q \Vdash \varphi $ by (3). So $p \Vdash \lnot \varphi$. 
+
+			\item follows from (5) and (4).
+
+			\item 
+			\begin{align*}
+				p \nVdash \lnot \varphi \longrightarrow \psi &\overset{(6)}\iff \exists r \leq p: 
+			(r \Vdash \lnot \varphi \land r \Vdash \lnot \psi)\\
+			&\overset{(5)}\iff \exists r \leq p: \forall q \leq r: q \Vdash \varphi  \land q \nVdash \psi    
+			\end{align*}
+			so $p \Vdash \varphi \lor \psi \iff \forall r \leq p: \exists q  \leq r: (
+			q \Vdash \varphi \lor q \Vdash \psi)$
+
+			Observe $M[G] \Vdash \varphi$ and $p \in G$ then there is a $q \in G$ with
+			$q \leq p$ and $q \Vdash \varphi $.
+		\end{enumerate}
+	\end{proof}
+
+	\begin{lemma*}
+		Let $\varphi(x) \in \mathcal{FL}_{M, \mathbb{P}}$ with only one free
+		variable $x$.
+
+		 \begin{enumerate}[1.]
+		 	\item $p \Vdash \forall x: \varphi(x)$ iff $p \Vdash \varphi(\tau)$ for all
+			$\tau \in M^\mathbb{P}$
+			\item $p \Vdash \exists x: \varphi(x)$ iff $\set{q \leq p \mid
+			\exists \tau \in M^\mathbb{P}: q \Vdash \varphi(\tau)}$ is dense
+			below $p$.
+		 \end{enumerate}
+	\end{lemma*}
+
+	\begin{proof}
+		\begin{enumerate}[1.]
+			\item $M[G] \vDash \forall x: \varphi(x)$ iff $M[G] \vDash \varphi(\tau)$
+			for all $\tau \in M^\mathbb{P}$ so $p \Vdash \forall x: \varphi(x)$ iff
+			for all $\tau \in M^\mathbb{P}$ and all generics $G$ with $p \in G$
+			$M[G] \vDash \varphi(\tau)$ iff $\forall \tau \in M^\mathbb{P}: p \Vdash
+			\varphi(\tau)$.
+
+			\item By Lemma 1(5) and Lemma 2(1) $p\Vdash \lnot \forall x:\lnot \varphi(x)
+			\iff $ for all $r \leq p: r \nVdash \lnot \varphi(x) $ iff by (1) $
+			\forall r\leq p: \exists \tau \in M^\mathbb{P}: r\nVdash \lnot \varphi(\tau)
+			$ iff by (5) $\forall r \leq p: \exists \tau \in M^\mathbb{P}: \exists q \leq r: q \Vdash \varphi(\tau)$
+		\end{enumerate}
+	\end{proof}
 \end{document}
