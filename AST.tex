@@ -38,6 +38,7 @@
 \newtheorem*{proposition*}{Proposition}
 \newtheorem*{lemma*}{Lemma}
 \newtheorem*{theorem*}{Theorem}
+\newtheorem*{corollary*}{Corollary}
 
 \theoremstyle{remark}
 \newtheorem*{recall*}{Recall}
@@ -1073,5 +1074,150 @@
 			\forall r\leq p: \exists \tau \in M^\mathbb{P}: r\nVdash \lnot \varphi(\tau)
 			$ iff by (5) $\forall r \leq p: \exists \tau \in M^\mathbb{P}: \exists q \leq r: q \Vdash \varphi(\tau)$
 		\end{enumerate}
+	\end{proof}
+
+	\begin{definition*}
+		Define by recursion on the complexity of formulae
+		\begin{enumerate}[1.]
+			\item $p \Vdash^* \varphi \land \psi$ iff $p \Vdash^* \varphi$ and $p \Vdash^* \psi$
+			\item $p \Vdash^* \varphi \land \psi$ iff $\lnot \exists q \leq p: q \Vdash^* \varphi$
+			\item $p \Vdash^* \varphi \longrightarrow \psi$ iff $\lnot \exists q \leq p: (q \Vdash^* \varphi \land q \Vdash^* \lnot \psi)$
+			\item $p \Vdash^* \varphi \lor \psi$ iff $\set{q \mid q \Vdash^* \varphi \lor q \Vdash^* \psi}$ is dense below $p$
+			\item $p \Vdash^* \forall x: \varphi(x)$ iff $\forall \tau \in M^\mathbb{P}: p \Vdash^* \varphi(\tau)$
+			\item $p \Vdash^* \exists x: \varphi(x)$ iff $\set{q \mid \exists \tau \in M^\mathbb{P}: p \Vdash^* \varphi(\tau)}$
+		\end{enumerate}
+	\end{definition*}
+
+	\begin{definition*}
+		For a forcing poset $\mathbb{P}$ and names $\tau, \theta, \pi \in M^\mathbb{P}$:
+		\begin{enumerate}[1.]
+			\item $p \Vdash^* \tau = \theta$ iff $\forall \sigma \in \dom(\tau) \cup \dom(\theta)$:
+			$\forall q \leq p: q \Vdash^* \sigma \in \tau \longleftrightarrow q \Vdash^* \sigma \in \theta$
+
+			\item $p \Vdash^* \pi \in \tau$ iff $\set{q \leq p \mid \exists (\sigma, r) \in \tau: (q \leq r \land q \Vdash^* \pi = \sigma)}$ 
+			is dense below $p$
+		\end{enumerate}
+	\end{definition*}
+
+	\begin{example*}
+		$p \Vdash^* \tau = \tau$ holds for all $\tau \in M^\mathbb{P}$ trivially.
+
+		If $(\pi, r') \in \tau$ and $p \leq r'$ then $p \Vdash^* \pi \in \tau$ because $q \Vdash^* \pi = \pi$ for all $q$
+	\end{example*}
+
+	Is this well defined? Defined by recursion on the rank of names.
+
+	For names of rank $0$ (i.e. $\emptyset$) then 1. is vacuously true and 2. is trivially false
+
+	Suppose 1 and 2 are defined for names of rank $< \alpha$ and 
+	$\max\set{rk(\tau), rk(\theta)} = \alpha$. To evaluate 1 we need
+	to evaluate $q \Vdash^* \sigma \in \tau/\theta$ where $rk(\sigma) < \alpha$
+	so we use 2. We need to evaluate $q \Vdash^* \sigma = \pi$ where $rk(\pi) < \alpha$
+
+	To  evaluate 2 with $rk(\pi) < \alpha$ as above.
+
+	To evaluate 2 with $rk(\pi) = \alpha, rk(\tau) \leq \alpha$.
+	We need to evaluate $q \Vdash^* \pi = \sigma$ where $rk(\sigma) < \alpha$
+	so use 1.
+
+	As we've just shown 1 is well-defined on names of rank $\alpha$.
+	Thus $\Vdash^*$ is well-defined
+
+	\begin{lemma*}[1]
+		For $\varphi \in \mathcal{FL}_{M, \mathbb{P}}$ a sentence
+		\begin{enumerate}[(a)]
+			\item If $p \Vdash^* \varphi$ and $p_1 \leq p$ then $p_1 \Vdash^* \varphi$
+
+			\item $p \Vdash^* \varphi$ iff $\set{p_1 \leq p \mid p_1 \Vdash^* \varphi}$ is dense below $p$
+
+			\item $p \Vdash^* \varphi$ iff $\lnot \exists q \leq p: q \Vdash^* \lnot \varphi$
+		\end{enumerate}
+	\end{lemma*}
+
+	\begin{proof}
+		(c) follows from (b): If $p \Vdash^* \varphi$ and $q \leq p, q \Vdash^* \lnot \varphi$ then
+		$\lnot \exists r \leq q: r \Vdash^* \varphi \implies
+		\set{p_1 \leq p \mid p_1 \Vdash^* \varphi}$ is dense below $p$.
+
+		(a) For atomic $\varphi$ this follows from the definition.
+		For a composed formula this is an easy induction.
+
+		(b) ($\implies$) follows from (a)
+		
+		Note: If $A \subseteq \mathbb{P}$ with $\set{q \mid A \text{ is dense below } q}$ dense below $p$
+		then $A$ is dense below $p$.
+		
+		($\impliedby$) When $\varphi$ is $\pi \in \tau$. If
+		the right hand side holds, by 2 of the definition 
+		$A = \set{q \leq p \mid \exists (\sigma, r) \in \tau: q \leq r \land q \Vdash^* \pi = \sigma}$
+		is dense below each $p_1 \leq p$ s.t. $p_1 \Vdash^* \pi \in \tau$,
+		so $A$ is dense below $p$ by the note and thus $p \Vdash^* \pi \in \tau$ by definition.
+	
+		If $\varphi$ is $\tau = \theta$ and the right hand side holds
+		then 
+
+		$\forall \sigma \in \dom(\tau) \cup \dom(\theta): \set{p_1 \leq p \mid p_1 \Vdash^* \sigma \in \tau \longleftrightarrow
+		p_1 \Vdash^* \sigma \in \theta}$ dense below $p$ and hence
+		also dense below any $q \leq p$ thus if $q \Vdash^* \sigma \in \tau$
+		by (a) $\set{p_1 \leq q \mid p_1 \Vdash^* \sigma \in \tau \land p_1 \Vdash^* \sigma \in \theta}$
+		is dense below $q$ so by (b) $q \Vdash^* \sigma \in \theta$.
+		Similarly if $q \Vdash^* \sigma \in \theta$ then
+		$q \Vdash* \sigma \in \tau$. Thus $p \Vdash^* \tau = \theta$.
+		
+		For compound $\varphi$ we will just look at 2 examples:
+
+		1. $\set{p_1 \leq p \mid p_1 \Vdash^* \varphi \land \psi}$ is dense below $p$ then
+		$\set{p_1 \leq p \mid p_1 \Vdash^* \varphi \land p_1 \Vdash^* \psi}$ is
+		dense below $p$. By the inductive hypothesis we get 
+		$p \Vdash^* \varphi$ and $p \Vdash^* \psi$ so $p\Vdash^* \varphi \land \psi$.
+
+		6. $\set{p_1 \leq p \mid p_1 \Vdash* \exists x: \varphi(x)}$ dense below $p$ then
+		$A = \set{q \leq p \mid \exists \tau \in M^\mathbb{P}: q \Vdash^* \varphi(\tau)}$
+		is dense below each $p_1$ above. So by the 
+		note $A$ is dense below $p$ so $p \Vdash^* \exists x: \varphi(x)$
+	\end{proof}
+
+	\begin{lemma*}[2]
+		Let $D \subseteq \mathbb{P}$ with $D \in M$ be dense below
+		$p \in \mathbb{P}$. If $G$ is $\mathbb{P}$-generic over $M$
+		and $p \in G$ then $G \cap D = \emptyset$.
+	\end{lemma*}
+
+	\begin{proof}
+		Exercise
+	\end{proof}
+
+	\begin{lemma*}[3]
+		Let $M$ be a ctm with $\mathbb{P} \in M$ and $G$
+		be $\mathbb{P}$-generic over $M$. Fix $\varphi \in \mathcal{FL}_{M, \mathbb{P}}$ a sentence. Then
+
+		\begin{enumerate}[(a)]
+			\item If $p \in G$ and $p \Vdash^* \varphi $ then
+			$M[G] \vDash \varphi$
+
+			\item If $M[G] \vDash \varphi$ then there is some
+			$p \in G$ s.t. $p \Vdash^* \varphi$
+		\end{enumerate}
+	\end{lemma*}
+
+	\begin{corollary*}
+		Let $M, \mathbb{P}, \varphi $ be as in Lemma 3. Then 
+		$p \Vdash \varphi $ iff $p \Vdash^* \varphi$
+	\end{corollary*}
+
+	\begin{proof}[of corollary]
+		$p \Vdash^* \varphi \overset{\text{Lem 3a}}\implies$ for 
+		any generic $G \ni p$: $M[G] \vDash \varphi \overset{\text{def}}\iff p \Vdash \varphi$
+
+		Suppose $p \Vdash \varphi$ but $p \nVdash^* \varphi$.
+		By Lemma 1c) $\exists q \leq p: q \Vdash^* \lnot \varphi$.
+		Then for such a $q$ by definition of $\Vdash^*$: 
+		$\lnot \exists r \leq q: r \Vdash^* \varphi$.
+
+		Let $G$ be generic with $q \in G$ then $p \in G$ so $M[G] \vDash \varphi$
+		by definition of $\Vdash$. By lemma 3b) $s \in G$ s.t.
+		$s \Vdash^* \varphi$. Since $q, s \in G$ 
+		$\exists r \in G: r \leq q, r \leq s$. 
+		Then $r \Vdash^* \varphi$ by Lemma 1a)
 	\end{proof}
 \end{document}
