@@ -1220,4 +1220,123 @@
 		$\exists r \in G: r \leq q, r \leq s$. 
 		Then $r \Vdash^* \varphi$ by Lemma 1a)
 	\end{proof}
+
+	\begin{proof}[of Lemma 3]
+		We start with the case $\varphi$ atomic and prove (a) and (b) by induction on the rank of names.
+		Inductive hypothesis: Assume claim (a/b) is true for sentences of the form $\theta = \tau$ where $rk(\theta), rk(\tau) < \alpha$
+
+		\begin{enumerate}[1.]
+			\item Using the inductive hypothesis, show true for $\varphi = ``\pi \in \tau"$ where $rk(\pi) < \alpha, rk(\tau) \leq \alpha$
+			\item Using 1 show true for $\varphi = ``\theta = \tau"$ with $rk(\theta), rk(\tau) \leq \alpha$
+			\item Using 1 show true for $\varphi = ``\theta \in \tau"$ where $rk(\pi), rk(\tau) \leq \alpha$
+		\end{enumerate}
+		\underline{Note}: We do not need to do step 3 seperately as it follows from step 1 and the inductive hypothesis for $\alpha+1$
+
+		\begin{enumerate}[(a)]
+			\item Fix $p \in G$. If $p \Vdash^* \pi \in \tau$ then $D:= \set{q \leq p \mid \exists (\sigma, r) \in \tau: (q  \leq r \land q \Vdash^* \pi \in \sigma)}$
+			is dense below $p$ and $D \in M$, so by Lemma 2 fix $q \in G \cap D$ and then fix $(\sigma, r) \in \tau$ with $q \leq r$ and $q \Vdash^* \pi = \sigma$.
+			By IH(a) $M[G] \vDash \pi = \sigma$ i.e. $\pi_G = \sigma_G$. Also $r \in G$ as $G$ is a filter so $\sigma_G \in \tau_G$. Thus $M[G] \vDash \pi \in \tau$.
+
+			If $p \Vdash^* \tau = \theta$ we need to show $\tau_G = \theta_G$. We prove $\tau_G \subseteq \theta_G$, the other way is symmetric.
+			Fix an element $\sigma_G$ of $\tau_G$ with $(\sigma, r) \in \tau$ and $r \in G$. We show $\sigma_G \in \theta_G$. Fix $q \in G$ s.t.
+			$q \leq p$ and $q \leq r$. Then $q \Vdash^* \sigma \in \tau$ so $q \Vdash^* \sigma \in \theta$ by definition of $\Vdash^*$. By IH(a)
+			$M[G] \vDash \sigma \in \theta$ so $\sigma_G \in \theta_G$.
+
+			\item If $M[G] \vDash \pi \in \tau$ we must find $p \in G$ s.t. $D := \set{q \leq p \mid \exists (\sigma, r) \in \tau: q \leq r \land q \Vdash^* \pi = \sigma}$ is 
+			dense below $p$. By definition of $\tau_G$ fix $(\sigma, r) \in \tau$ with $r \in G$ s.t. $\pi_G = \sigma_G$. By IH(b) fix $p \in G$ s.t. $p \Vdash^* \pi = \sigma$.
+			Since $G$ is.
+
+			Lemma 1a) implies we may assume $p \leq r$ then lemma 1a implies $\forall q \leq p: q \in D$ so $D$ is dense below $p$.
+			When $\varphi$ is $\tau = \theta$ let $D$ be the set of all $p \in \mathbb{P}$ s.t. at least one off the following holds:
+			\begin{enumerate}[1.]
+				\item $p \Vdash^* \tau = \theta$
+				\item For some $\sigma \in dom(\tau) \cup dom(\theta):  p \Vdash^* \sigma \in \tau$
+				and $p\Vdash^* \sigma \notin \tau$
+				\item For some $\sigma \in dom(\tau) \cup dom(\theta):  p \Vdash^* \sigma \notin \tau$
+				and $p\Vdash^* \sigma \in \tau$
+			\end{enumerate}
+			Then $D \in M$ and $D$ is dense: Suppose $q \in \mathbb{P}$ with
+			$\lnot q \Vdash^* \tau = \theta$ then $\exists \sigma \in dom(\tau) \cup dom(\theta): \exists q' \leq q: $
+			$q' \Vdash^* \sigma \in \tau \nleftrightarrow q' \Vdash^* \sigma \in \theta$
+			Wlog suppose $q' \Vdash^* \sigma \in \tau$ and $\lnot q' \Vdash^* \sigma \in \theta$.
+			Then by lemma 1c) $\exists p \leq q': p \Vdash^* \sigma \notin \theta$ and
+			by lemma 1a $p \Vdash^* \sigma \in \tau$. Thus $p$ satisfies 2 so $p \in D$
+			and $p \leq q$.
+
+			If $M[G] \vDash \tau = \theta$ fix $p \in G \cap D$. If 1 holds we're done.
+			If 2 holds then $p\Vdash^* \sigma \in \tau$ so $M[G] \vDash\sigma \in \tau$
+			so $\sigma_G \in \tau_G$ so by IH(b) fix $q \in G$ s.t. $q \Vdash^* \sigma \in \theta$
+			then fix $r \in G$ with $r \leq p$ and $r \leq q$. Then $r \Vdash^* \sigma \in \theta$
+			by lemma 1a and $r \Vdash^* \sigma \notin \theta$.
+
+			For (3) we argue symmetricly.
+
+			For compound formulae $\varphi$ we prove a and b together by induction 
+			on the length of $\varphi$. There are 6 cases but we just do two here.
+			
+			$\lnot \varphi$: suppose a and b hold for $\varphi$. For a if $p \in G$
+			and $p \Vdash^* \lnot \varphi$ and $M[G] \vDash \varphi$ then
+			by IH(b) find $r \in G$ s.t. $r \Vdash^* \varphi$ and $q \in G$ with
+			$q < p$ and $q < r$. Then $q \Vdash^* \varphi$ by lemma 1a and 
+			$\lnot q \Vdash^* \varphi$ by the definition of $p \Vdash^* \lnot \varphi$.
+
+			For (b) note that $D := \set{p \in \mathbb{P} \mid p \Vdash^* \varphi \lor p \Vdash^* \lnot \varphi} \in M$
+			and $D$ is dense by definition of $p \Vdash^* \lnot \varphi$.
+			Assume $M[G] \vDash \lnot \varphi$ and fix $p \in G \cap D$.
+			$p \Vdash^* \varphi$  would contradict IH(a) so we must have $p \Vdash^* \lnot \varphi$.
+
+			$\forall x: \varphi(x)$: Suppose $\forall \tau \in M^\mathbb{P}$ (a) and (b)
+			hold for $\varphi(\tau)$. For (a) If $p \in G$ and $p \Vdash^* \forall x: \varphi(x)$
+			Then by the definition of $\forall \tau \in M^\mathbb{P}$ $p\Vdash^* \varphi(\tau)$
+			so by IH $\forall \tau \in M^\mathbb{P}: M[G] \vDash \varphi(\tau)$
+			so $M[G] \vDash \varphi(\tau_G)$ thus $M[G] \vDash \forall x: \varphi(x)$
+
+			For (b) suppose $M[G] \vDash \forall x: \varphi(x)$ thus $\forall \tau \in
+			M^\mathbb{P}: M[G] \vDash \varphi(\tau)$
+
+			$D' = \set{q \mid q \Vdash^* \forall x: \varphi(x) \lor q \Vdash^* \exists
+			\lnot \varphi(x)} \in M$ and $D'$ is dense as it is just the set
+			$D$ replacing $\varphi$ with $\forall x \varphi(x)$ here.
+
+			Let $p \in D \cap G$. If $p \Vdash^* \forall x \varphi(x)$ otherwise
+			$p \Vdash^* \exists x \lnot \varphi(x)$ so by definition 
+			$\set{q \mid \exists \tau \in M^\mathbb{P}: q \Vdash^*\lnot \varphi(\tau)}$
+			is dense below $p$. So by lemma 2 we can find $q \in G, \tau \in M^\mathbb{P}$
+			s.t. $q \Vdash^* \lnot \varphi(\tau), q \leq p$.
+			But then by IH(a) $M[G] \vDash \lnot \varphi(\tau)$.	
+		\end{enumerate}
+	\end{proof}
+	Let $M \vDash \ZFC$ be a ctm and $\mathbb{P} \in M$ an atomless forcing poset,
+	$G$ $\mathbb{P}$-generic over $M$. Then (1) $M[G] \vDash \ZFC$ is a ctm,
+	(2) $G \in M[G] \setminus M$ and $M[G]$ is minimal s.t. (1) and (2) hold.
+
+	We want to show that $\Con(\ZFC) \implies \Con(\ZFC + \lnot \CH)$.
+
+	If $M\vDash \ZFC + \lnot \CH$ we're done so we assume $M\vDash \ZFC + \CH$
+	and we want to choose $\mathbb{P}$ s.t. for any $\mathbb{P}$-generic $G$
+	$M[G] \vDash \lnot \CH$.
+	
+	\underline{Recall}: $Fn(I, J)$, $I$ infinite, $J \neq \emptyset$, $I, J \in M$.
+	If $G$ is $\mathbb{P}$-generic over $M$ then $\bigcup G =: f_G$ is a function
+	with $\dom(f_G) = I, f_G \notin M$.
+
+	\begin{example*}
+		$Fn(\omega, 2)$. If $G$ is a generic over $M$ then $\bigcup G$ is a characteristic
+		function for a new subset of $\omega$.
+
+		Let $\chi \in M$ with $(\kappa = \omega_2)_M$ i.e. $\kappa = \omega_2^M$.
+		Let $f_G = \bigcup G$ then $f_G : \kappa \times \omega \to 2$ as
+		above. We can think of $f_G$ as coding $\kappa$-many functions $h_\alpha:\omega \to 2$
+		for $\alpha < \kappa$ where $h_\alpha(n) = f_G(\alpha, n)$.
+
+		Then $E_{\alpha, \beta} = \set{p \in \mathbb{P} \mid \exists n \in \omega [
+		(\alpha, n), (\beta, n) \in \dom(p) \land p(\alpha, n) \neq p(\beta, n)]}$
+		is dense for $\alpha < \beta < \kappa$:
+		
+		For $q \in \mathbb{P}$ we extend $q$ to $p := q \cup \set{((\alpha, n), 0), 
+		((\beta, n), 1)}$ where $n > \max\set{m \mid \exists \gamma < \kappa (\gamma, m)
+		\in \dom(q)}$. Then $p \in E_{\alpha, \beta}$. Then
+		$G$ must meet each $E_{\alpha, \beta}$ anch therefore $h_\alpha \neq h_\beta$
+		for $\alpha \neq \beta$.
+	\end{example*}
 \end{document}
